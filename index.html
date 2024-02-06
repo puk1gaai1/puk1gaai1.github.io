@@ -1,26 +1,48 @@
 <html>
+
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/vega@5.25.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@5.16.3"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@6.22.2"></script>
+
 <body>
-  No banner image
-  <script type="module">
-    import { createApp, ref } from 'vue'
+  <div id="vis"></div>
 
-    createApp({
-      setup() {
-        const count = ref(0)
-
-        return {
-          count
+  <script>
+    // Assign the specification to a local variable vlSpec.
+    var vlSpec = {
+      $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+      data: {
+        values: [
+          { a: 'C', b: 2 },
+          { a: 'C', b: 7 },
+          { a: 'C', b: 4 },
+          { a: 'D', b: 1 },
+          { a: 'D', b: 2 },
+          { a: 'D', b: 6 },
+          { a: 'E', b: 8 },
+          { a: 'E', b: 4 },
+          { a: 'E', b: 7 }
+        ]
+      },
+      mark: 'bar',
+      encoding: {
+        y: { field: 'a', type: 'nominal' },
+        x: {
+          aggregate: 'average',
+          field: 'b',
+          type: 'quantitative',
+          axis: {
+            title: 'Average of b'
+          }
         }
       }
-    }).mount('#app')
-  </script>
+    };
 
-  <div id="app">
-    {{ count }}
-    <button @click="count++">Count</button>
-  </div>
+    // Embed the visualization in the container with id `vis`
+    vegaEmbed('#vis', vlSpec);
+  </script>
 </body>
 
 </html>
